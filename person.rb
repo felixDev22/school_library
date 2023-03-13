@@ -1,5 +1,5 @@
 class Person
-  def initialize(name = 'Unknown', age, parent_permission: true)
+  def initialize(age, parent_permission: true, name = "Unknown") 
     @name = name
     @age = age
     @parent_permission = parent_permission
