@@ -1,5 +1,5 @@
 class Person
-  def initialize(age, parent_permission: true, name: "Unknown")
+  def initialize(age, parent_permission: true, name: 'Unknown')
     @name = name
     @age = age
     @parent_permission = parent_permission
@@ -11,7 +11,6 @@ class Person
 
   # getter and setter for name and age
   attr_accessor :name, :age
-
 
   private
 
