@@ -1,5 +1,5 @@
 AllCops:
-  TargetRubyVersion: 3.1
+  TargetRubyVersion: 3.1.3
   NewCops: enable
   Exclude:
     - 'Guardfile'
@@ -7,7 +7,6 @@ AllCops:
     - 'node_modules/**/*'
 
   DisplayCopNames: true
-
 Layout/LineLength:
   Max: 120
 Metrics/MethodLength:
