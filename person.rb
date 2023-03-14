@@ -1,16 +1,20 @@
-class Person
+require_relative './nameable.rb'
+
+class Person < Nameable
+  attr_reader :id
+  attr_accessor :name, :age
+
   def initialize(age, parent_permission: true, name: 'Unknown')
+    super()
     @name = name
     @age = age
     @parent_permission = parent_permission
     @id = Random.rand(1..1000)
   end
 
-  # getter for id
-  attr_reader :id
-
-  # getter and setter for name and age
-  attr_accessor :name, :age
+  def correct_name
+    @name
+  end
 
   private
 
