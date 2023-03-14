@@ -1,5 +1,5 @@
 class Nameable
   def correct_name
-    raise NotImplementedError, 'Subclasses must implement the correct_name method'
+    raise NotImplementedError, "#{self.class} has not implemented method '#{__method__}'"
   end
 end
