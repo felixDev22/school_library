@@ -4,7 +4,7 @@ class Book
   def initialize(title, author)
     @title = title
     @author = author
-    @rentails = []
+    @rentals = []
   end
 
   def add_rental(date, person)
