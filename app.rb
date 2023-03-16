@@ -27,48 +27,26 @@ def create_book
 end
 
 def create_student
-  name = ''
-  loop do
-    puts 'Enter student name:'
-    name = gets.chomp
-    break unless name.empty?
-
-    puts 'Please enter a valid name'
+  puts 'create a new student'
+  puts 'Age:'
+  age = gets.chomp.to_i
+  puts 'Name:'
+  name = gets.chomp
+  puts 'Has parent permission? [Y/N]:'
+  parent_permission = gets.chomp.downcase
+  case parent_permission
+  when 'y'
+    student = Student.new(classroom: @classroom, age:, name:, parent_permission: true)
+    @people << student
+    puts 'Student created successfully'
+  when 'n'
+    student = Student.new(classroom: @classroom, age:, name:, parent_permission: false)
+    @people << student
+    puts 'Student created successfully'
+  else
+    puts 'Invalid option'
+    nil
   end
-
-  age = ''
-  loop do
-    puts 'Enter student age:'
-    age = gets.chomp
-    break if age.to_i.to_s == age && age.to_i.positive?
-
-    puts 'Invalid input. Please enter a positive integer for age:'
-  end
-
-  parent_permission = ''
-  loop do
-    puts 'Has parent permission? [Y/N]:'
-    parent_permission = gets.chomp.upcase
-    break if %w[Y N].include?(parent_permission)
-
-    puts 'Please enter either Y or N'
-  end
-
-  classroom_type = ''
-  loop do
-    puts 'Classroom type eg. Math class:'
-    classroom_type = gets.chomp
-    break unless classroom_type.empty?
-
-    puts 'Please enter a valid classroom type'
-  end
-
-  parent_permission = parent_permission == 'Y'
-  classroom = Classroom.new(classroom_type)
-  person = Person.new(age, name, parent_permission:)
-  student = Student.new(person, classroom)
-  Classroom.students.push(student)
-  puts 'Student created successfully'
 end
 
 def create_teacher
