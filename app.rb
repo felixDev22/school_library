@@ -26,97 +26,80 @@ def create_book
   puts 'Book created successfully'
 end
 
-# Add a Create Student method
 def create_student
-  age = nil
-  name = nil
-  parent_permission = nil
-  classroom_type = nil
-
+  name = ''
   loop do
-    puts 'Age:'
-    age = gets.chomp
-    break if age.to_i.to_s == age && age.to_i > 0
-
-    puts 'Please enter a valid age'
-  end
-
-  loop do
-    puts 'Name:'
+    puts 'Enter student name:'
     name = gets.chomp
     break unless name.empty?
+
     puts 'Please enter a valid name'
   end
 
+  age = ''
+  loop do
+    puts 'Enter student age:'
+    age = gets.chomp
+    break if age.to_i.to_s == age && age.to_i.positive?
+
+    puts 'Invalid input. Please enter a positive integer for age:'
+  end
+
+  parent_permission = ''
   loop do
     puts 'Has parent permission? [Y/N]:'
     parent_permission = gets.chomp.upcase
-    break if ['Y', 'N'].include?(parent_permission)
+    break if %w[Y N].include?(parent_permission)
+
     puts 'Please enter either Y or N'
   end
 
+  classroom_type = ''
   loop do
     puts 'Classroom type eg. Math class:'
     classroom_type = gets.chomp
     break unless classroom_type.empty?
+
     puts 'Please enter a valid classroom type'
   end
 
-  case parent_permission
-  when 'Y'
-    parent_permission = true
-  when 'N'
-    parent_permission = false
-  end
-
+  parent_permission = parent_permission == 'Y'
   classroom = Classroom.new(classroom_type)
-  person = Person.new(age, name, parent_permission: parent_permission)
+  person = Person.new(age, name, parent_permission:)
   student = Student.new(person, classroom)
   Classroom.students.push(student)
   puts 'Student created successfully'
 end
 
-# Create a teacher section
 def create_teacher
-  age = nil
-  name = nil
-  specialization = nil
-
+  name = ''
   loop do
-    puts 'Age:'
-    age = gets.chomp
-    break if age.to_i.to_s == age && age.to_i > 0
-    puts 'Please enter a valid age'
-  end
-
-  loop do
-    puts 'Name:'
+    puts 'Enter teacher name:'
     name = gets.chomp
     break unless name.empty?
+
     puts 'Please enter a valid name'
   end
 
+  specialty = ''
   loop do
-    puts 'Specialization:'
-    specialization = gets.chomp
-    break unless specialization.empty?
-    puts 'Please enter a valid specialization'
-  end
+    puts 'Enter teacher specialty:'
+    specialty = gets.chomp
+    break unless specialty.empty?
 
-  person = Person.new(age, name)
-  new_teacher = Teacher.new(person, specialization)
-  Teacher.teachers << new_teacher
-  puts 'Teacher successfully created'
+    puts 'Please enter a valid specialty'
+  end
+  puts 'Teacher created successfully'
 end
 
 # List all people section
-def get_teachers
+def retrieve_teachers
   teachers = Teacher.teachers
   puts '' if teachers.empty?
   teachers
 end
 
-def get_students
+def retrieve_students
   students = Classroom.students
   puts '' if students.empty?
   students
@@ -124,8 +107,8 @@ end
 
 def all_people
   people = []
-  all_teachers = get_teachers
-  all_students = get_students
+  all_teachers = retrieve_teachers
+  all_students = retrieve_students
 
   all_teachers.each do |teacher|
     teacher_str = "[Teacher] Name: #{teacher.name}, Age: #{teacher.age}, Id: #{teacher.id}"
@@ -201,8 +184,3 @@ def user_rentals
     end
   end
 end
-
-
-
-
-
