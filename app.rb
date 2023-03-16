@@ -1,4 +1,5 @@
 require_relative './book'
+require_relative './student'
 
 class App
   def initialize
@@ -25,4 +26,45 @@ def create_book
   book = Book.new(title, author)
   Book.saved_books.push(book)
   puts 'Book created successfully'
+end
+
+# Add a Create Student method
+def continue(age, name, parent_permission, classroom_type)
+  case parent_permission.upcase
+  when 'Y'
+    parent_permission = true
+  when 'N'
+    parent_permission = false
+  end
+
+  classroom = Classroom.new(classroom_type)
+  person = Person.new(age, name, parent_permission: parent_permission)
+  student = Student.new(person, classroom)
+  Classroom.students.push(student)
+  puts 'Student created successfully'
+end
+
+def create_student
+  age = nil
+  name = nil
+  parent_permission = nil
+  classroom_type = nil
+
+  loop do
+    puts 'Age:'
+    age = gets.chomp
+
+    puts 'Name:'
+    name = gets.chomp
+
+    puts 'Has parent permission? [Y/N]:'
+    parent_permission = gets.chomp
+
+    puts 'Classroom type eg. Math class:'
+    classroom_type = gets.chomp
+
+    break unless age.empty? || name.empty? || classroom_type.empty? || parent_permission.empty?
+  end
+
+  resume(age, name, parent_permission, classroom_type)
 end
