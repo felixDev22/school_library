@@ -1,6 +1,8 @@
 require_relative './book'
 require_relative './student'
+require_relative './classroom'
 require_relative './teacher'
+require_relative './person'
 
 class App
   def initialize
@@ -95,5 +97,42 @@ def create_teacher
   puts 'Teacher successfully created'
 end
 
+# list all people section...
+def get_teachers
+  teachers = Teacher.teachers
+  puts '' if teachers.empty?
+  teachers
+end
+
+def get_students
+  students = Classroom.students
+  puts '' if students.empty?
+  students
+end
+
+def all_people
+  people = []
+  all_teachers = get_teachers
+  all_students = get_students
+
+  all_teachers.each do |teacher|
+    teacher_str = "[Teacher] Name: #{teacher.name}, Age: #{teacher.age}, Id: #{teacher.id}"
+    people << { str: teacher_str, obj: teacher }
+  end
+
+  all_students.each do |student|
+    student_str = "[Student] Name: #{student.name}, Age: #{student.age}, Id: #{student.id}"
+    people << { str: student_str, obj: student }
+  end
+
+  if people.empty?
+    puts 'Empty: Please create a person.'
+  else
+    people.each do |human|
+      puts human[:str]
+    end
+  end
+  people
+end
 
 
