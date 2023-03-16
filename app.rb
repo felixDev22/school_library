@@ -9,7 +9,7 @@ class App
   def initialize
     @books = []
   end
-
+end
 
 def all_book
   booklist = Book.saved_books
@@ -174,6 +174,22 @@ def create_rental
   add_rentee(book_list, persons, book_num)
 end
 
+def user_rentals
+  puts 'ID of person:'
+  id = gets.chomp.to_i
+
+  # Find all rentals for the person with the given ID
+  rentals = Person.all_rentals.select { |rental| rental.person.id == id }
+
+  if rentals.empty?
+    puts "No rentals found for person with ID #{id}."
+  else
+    # Print details of each rental
+    rentals.each do |rental|
+      puts "Date: #{rental.date}, Book: #{rental.book.title} by #{rental.book.author}"
+    end
+  end
+end
 
 
 
