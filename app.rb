@@ -5,17 +5,11 @@ require_relative './teacher'
 require_relative './person'
 require_relative './rental'
 
-class App
-  def initialize
-    @books = []
-  end
-end
-
 def all_book
   booklist = Book.saved_books
-if booklist.empty?
-  puts 'No book yet!, please add a book'
- else
+  if booklist.empty?
+    puts 'No book yet!, please add a book'
+  else
     booklist.each do |book|
       puts "Title: #{book.title}, Author: #{book.author}"
     end
@@ -33,8 +27,42 @@ def create_book
 end
 
 # Add a Create Student method
-def continue(age, name, parent_permission, classroom_type)
-  case parent_permission.upcase
+def create_student
+  age = nil
+  name = nil
+  parent_permission = nil
+  classroom_type = nil
+
+  loop do
+    puts 'Age:'
+    age = gets.chomp
+    break if age.to_i.to_s == age && age.to_i > 0
+
+    puts 'Please enter a valid age'
+  end
+
+  loop do
+    puts 'Name:'
+    name = gets.chomp
+    break unless name.empty?
+    puts 'Please enter a valid name'
+  end
+
+  loop do
+    puts 'Has parent permission? [Y/N]:'
+    parent_permission = gets.chomp.upcase
+    break if ['Y', 'N'].include?(parent_permission)
+    puts 'Please enter either Y or N'
+  end
+
+  loop do
+    puts 'Classroom type eg. Math class:'
+    classroom_type = gets.chomp
+    break unless classroom_type.empty?
+    puts 'Please enter a valid classroom type'
+  end
+
+  case parent_permission
   when 'Y'
     parent_permission = true
   when 'N'
@@ -48,32 +76,7 @@ def continue(age, name, parent_permission, classroom_type)
   puts 'Student created successfully'
 end
 
-def create_student
-  age = nil
-  name = nil
-  parent_permission = nil
-  classroom_type = nil
-
-  loop do
-    puts 'Age:'
-    age = gets.chomp
-
-    puts 'Name:'
-    name = gets.chomp
-
-    puts 'Has parent permission? [Y/N]:'
-    parent_permission = gets.chomp
-
-    puts 'Classroom type eg. Math class:'
-    classroom_type = gets.chomp
-
-    break unless age.empty? || name.empty? || classroom_type.empty? || parent_permission.empty?
-  end
-
-  resume(age, name, parent_permission, classroom_type)
-end
-
-# Create a teacher Section
+# Create a teacher section
 def create_teacher
   age = nil
   name = nil
@@ -82,14 +85,22 @@ def create_teacher
   loop do
     puts 'Age:'
     age = gets.chomp
+    break if age.to_i.to_s == age && age.to_i > 0
+    puts 'Please enter a valid age'
+  end
+
+  loop do
     puts 'Name:'
     name = gets.chomp
+    break unless name.empty?
+    puts 'Please enter a valid name'
+  end
+
+  loop do
     puts 'Specialization:'
     specialization = gets.chomp
-
-    break unless age.empty? || name.empty? || specialization.empty?
-
-    puts 'Please enter a valid value for all fields'
+    break unless specialization.empty?
+    puts 'Please enter a valid specialization'
   end
 
   person = Person.new(age, name)
@@ -98,7 +109,7 @@ def create_teacher
   puts 'Teacher successfully created'
 end
 
-# list all people section...
+# List all people section
 def get_teachers
   teachers = Teacher.teachers
   puts '' if teachers.empty?
