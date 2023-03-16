@@ -3,6 +3,7 @@ require_relative './student'
 require_relative './classroom'
 require_relative './teacher'
 require_relative './person'
+require_relative './rental'
 
 class App
   def initialize
@@ -134,5 +135,47 @@ def all_people
   end
   people
 end
+
+def add_rentee(book_list, persons, book_num)
+  rented_book = book_list[book_num]
+
+  puts 'Select a person from the following list by number (not id)'
+  persons.each_with_index do |person, index|
+    puts "#{index}) #{person[:str]}"
+  end
+
+  rentee = gets.chomp.to_i
+  receiver = persons[rentee][:obj]
+
+  puts 'Date:'
+  date_rented = gets.chomp
+  receiver.add_rental(rented_book, date_rented)
+
+  puts 'Rental created successfully'
+end
+
+# create rental section...
+def create_rental
+  book_list = Book.saved_books
+  persons = all_people
+  if book_list.empty?
+    puts 'No books! please add a book'
+  elsif persons.empty?
+    puts 'please go back and create a person to rent the book'
+  else
+    puts 'Select a book from the following list by number'
+
+    book_list.each_with_index do |book, index|
+      puts "#{index}) Title: #{book.title}, Author: #{book.author}"
+    end
+    book_num = gets.chomp.to_i
+
+  end
+  add_rentee(book_list, persons, book_num)
+end
+
+
+
+
 
 
