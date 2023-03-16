@@ -1,5 +1,6 @@
 require_relative './book'
 require_relative './student'
+require_relative './teacher'
 
 class App
   def initialize
@@ -68,3 +69,31 @@ def create_student
 
   resume(age, name, parent_permission, classroom_type)
 end
+
+# Create a teacher Section
+def create_teacher
+  age = nil
+  name = nil
+  specialization = nil
+
+  loop do
+    puts 'Age:'
+    age = gets.chomp
+    puts 'Name:'
+    name = gets.chomp
+    puts 'Specialization:'
+    specialization = gets.chomp
+
+    break unless age.empty? || name.empty? || specialization.empty?
+
+    puts 'Please enter a valid value for all fields'
+  end
+
+  person = Person.new(age, name)
+  new_teacher = Teacher.new(person, specialization)
+  Teacher.teachers << new_teacher
+  puts 'Teacher successfully created'
+end
+
+
+
