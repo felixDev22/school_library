@@ -71,6 +71,24 @@ Clone this repository to your desired folder:
 - Clone the project to your directory by running
   - `https://github.com/felixDev22/school-library.git`
 
+### Install
+
+Install this project with:
+
+- GitHub Actions
+- Linters
+- Rubocop
+- Ruby
+
+### Usage
+
+- Use this project as a step to learning to practice building backend applications with Ruby and OOP concepts.
+- > run `irb` from the terminal"
+- > then rb(main):001:0> `require_relative './main.rb'` (the file you want to test `eg './app.rb'`)
+- > => true (this will show) press enter
+- > then irb(main):002:0> `make_person` (the method you want to test)
+- > follow the prompts
+
 ## 👥 Author <a name="authors"></a>
 
 👤 **Felix Nzomo Nyamai**
