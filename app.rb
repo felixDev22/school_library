@@ -106,48 +106,81 @@ class App
 
   def create_book
     puts 'create a new book'
-    puts 'Title:'
-    title = gets.chomp
-    puts 'Author:'
-    author = gets.chomp
+
+    title = nil
+    until title && !title.empty?
+      puts 'Title:'
+      title = gets.chomp.strip
+    end
+
+    author = nil
+    until author && !author.empty?
+      puts 'Author:'
+      author = gets.chomp.strip
+    end
+
     book = Book.new(title, author)
     @books << book
     puts "Book #{title} created successfully."
   end
 
   def create_rental
-    puts 'select the book you want to rent by entering it\'s number'
-    @books.each_with_index { |book, index| puts "#{index}) Title: #{book.title}, Author: #{book.author}" }
-    book_id = gets.chomp.to_i
-    return puts 'sorry wrong input' unless (0...@books.length).include?(book_id)
+    book = select_book
+    person = select_person
+    date = select_date
+    return unless book && person && date
 
-    puts 'select person from the list by its number'
-    tem_person = @people.select(&:can_use_services?)
-    tem_person.each_with_index do |person, index|
-      puts "#{index} [#{person.class.name}] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}"
-    end
-    person_id = gets.chomp.to_i
-    unless (0...tem_person.length).include?(person_id)
-      puts 'sorry wrong input'
-      return
-    end
-    print 'Date: '
-    date = gets.chomp.to_s
-    rental = Rental.new(date, tem_person[person_id], @books[book_id])
+    rental = Rental.new(date, person, book)
     @rentals << rental
     puts 'Rental created successfully'
   end
 
+  private
+
+  def select_book
+    puts 'select the book you want to rent by entering its number'
+    @books.each_with_index { |book, index| puts "#{index}) Title: #{book.title}, Author: #{book.author}" }
+    book_id = gets.chomp.to_i
+    return nil unless (0...@books.length).include?(book_id)
+
+    @books[book_id]
+  end
+
+  def select_person
+    available_people = @people.select(&:can_use_services?)
+    puts 'select a person from the list by entering their number'
+    available_people.each_with_index do |person, index|
+      puts "#{index}) [#{person.class.name}] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}"
+    end
+    person_id = gets.chomp.to_i
+    return nil unless (0...available_people.length).include?(person_id)
+
+    available_people[person_id]
+  end
+
+  def select_date
+    print 'Date: '
+    gets.chomp.to_s
+  end
+
   def list_rentals
-    puts 'ID of person:'
+    puts 'Enter the ID of the person:'
     id = gets.chomp.to_i
-    puts 'Rentals:'
-    @rentals.each do |rental|
-      if rental.person.id == id
-        puts "Date: #{rental.date}, Book: #{rental.book.title} by #{rental.person.name}"
-      else
-        puts 'No rentals found for that ID'
-      end
+    person = @people.find { |p| p.id == id }
+    if person.nil?
+      puts 'No person found with that ID'
+      return
+    end
+
+    rentals = @rentals.select { |rental| rental.person == person }
+    if rentals.empty?
+      puts 'No rentals found for that person'
+      return
+    end
+
+    puts "Rentals for #{person.name}:"
+    rentals.each do |rental|
+      puts "Date: #{rental.date}, Book: #{rental.book.title} by #{rental.book.author}"
     end
   end
 end
