@@ -38,36 +38,67 @@ class App
   end
 
   def create_student
-    puts 'create a new student'
+    age = request_age
+    name = request_name
+    parent_permission = request_parent_permission
+    return if parent_permission.nil?
+
+    student = Student.new(classroom: @classroom, age: age, parent_permission: parent_permission, name: name)
+    @people << student
+    puts 'Student created successfully'
+  end
+
+  def request_age
     puts 'Age:'
     age = gets.chomp.to_i
+    while age <= 0
+      puts 'Invalid input. Please enter a positive number for age:'
+      age = gets.chomp.to_i
+    end
+    age
+  end
+
+  def request_name
     puts 'Name:'
     name = gets.chomp
+    while name.empty?
+      puts 'Invalid input. Please enter a non-empty name:'
+      name = gets.chomp
+    end
+    name
+  end
+
+  def request_parent_permission
     puts 'Has parent permission? [Y/N]:'
     parent_permission = gets.chomp.downcase
-    case parent_permission
-    when 'y'
-      student = Student.new(classroom: @classroom, age: age, parent_permission: true, name: name)
-      @people << student
-      puts 'Student created successfully'
-    when 'n'
-      student = Student.new(classroom: @classroom, age: age, parent_permission: false, name: name)
-      @people << student
-      puts 'Student created successfully'
-    else
-      puts 'Invalid option'
-      nil
+    until %w[y n].include?(parent_permission)
+      puts 'Invalid input. Please enter Y or N:'
+      parent_permission = gets.chomp.downcase
     end
+    parent_permission == 'y'
   end
 
   def create_teacher
     puts 'create a new teacher'
-    puts 'Age:'
-    age = gets.chomp.to_i
-    puts 'Name:'
-    name = gets.chomp
-    puts 'Specialization:'
-    specialization = gets.chomp
+
+    age = nil
+    until age&.positive?
+      puts 'Age (must be a positive integer):'
+      age = gets.chomp.to_i
+    end
+
+    name = nil
+    until name && !name.empty?
+      puts 'Name:'
+      name = gets.chomp.strip
+    end
+
+    specialization = nil
+    until specialization && !specialization.empty?
+      puts 'Specialization:'
+      specialization = gets.chomp.strip
+    end
+
     teacher = Teacher.new(age, name, specialization)
     @people << teacher
     puts 'Teacher created successfully'
@@ -75,48 +106,81 @@ class App
 
   def create_book
     puts 'create a new book'
-    puts 'Title:'
-    title = gets.chomp
-    puts 'Author:'
-    author = gets.chomp
+
+    title = nil
+    until title && !title.empty?
+      puts 'Title:'
+      title = gets.chomp.strip
+    end
+
+    author = nil
+    until author && !author.empty?
+      puts 'Author:'
+      author = gets.chomp.strip
+    end
+
     book = Book.new(title, author)
     @books << book
     puts "Book #{title} created successfully."
   end
 
   def create_rental
-    puts 'select the book you want to rent by entering it\'s number'
-    @books.each_with_index { |book, index| puts "#{index}) Title: #{book.title}, Author: #{book.author}" }
-    book_id = gets.chomp.to_i
-    return puts 'sorry wrong input' unless (0...@books.length).include?(book_id)
+    book = select_book
+    person = select_person
+    date = select_date
+    return unless book && person && date
 
-    puts 'select person from the list by its number'
-    tem_person = @people.select(&:can_use_services?)
-    tem_person.each_with_index do |person, index|
-      puts "#{index} [#{person.class.name}] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}"
-    end
-    person_id = gets.chomp.to_i
-    unless (0...tem_person.length).include?(person_id)
-      puts 'sorry wrong input'
-      return
-    end
-    print 'Date: '
-    date = gets.chomp.to_s
-    rental = Rental.new(date, tem_person[person_id], @books[book_id])
+    rental = Rental.new(date, person, book)
     @rentals << rental
     puts 'Rental created successfully'
   end
 
+  private
+
+  def select_book
+    puts 'select the book you want to rent by entering its number'
+    @books.each_with_index { |book, index| puts "#{index}) Title: #{book.title}, Author: #{book.author}" }
+    book_id = gets.chomp.to_i
+    return nil unless (0...@books.length).include?(book_id)
+
+    @books[book_id]
+  end
+
+  def select_person
+    available_people = @people.select(&:can_use_services?)
+    puts 'select a person from the list by entering their number'
+    available_people.each_with_index do |person, index|
+      puts "#{index}) [#{person.class.name}] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}"
+    end
+    person_id = gets.chomp.to_i
+    return nil unless (0...available_people.length).include?(person_id)
+
+    available_people[person_id]
+  end
+
+  def select_date
+    print 'Date: '
+    gets.chomp.to_s
+  end
+
   def list_rentals
-    puts 'ID of person:'
+    puts 'Enter the ID of the person:'
     id = gets.chomp.to_i
-    puts 'Rentals:'
-    @rentals.each do |rental|
-      if rental.person.id == id
-        puts "Date: #{rental.date}, Book: #{rental.book.title} by #{rental.person.name}"
-      else
-        puts 'No rentals found for that ID'
-      end
+    person = @people.find { |p| p.id == id }
+    if person.nil?
+      puts 'No person found with that ID'
+      return
+    end
+
+    rentals = @rentals.select { |rental| rental.person == person }
+    if rentals.empty?
+      puts 'No rentals found for that person'
+      return
+    end
+
+    puts "Rentals for #{person.name}:"
+    rentals.each do |rental|
+      puts "Date: #{rental.date}, Book: #{rental.book.title} by #{rental.book.author}"
     end
   end
 end
