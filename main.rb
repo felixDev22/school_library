@@ -1,9 +1,7 @@
 require './options'
 
 def main
-  app = App.new
-  option = option.new(app)
-  option.start
+  App.new
 end
 
 main
