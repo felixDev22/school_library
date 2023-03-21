@@ -5,6 +5,10 @@ require_relative 'book'
 require_relative 'rental'
 require_relative 'classroom'
 require_relative 'options'
+require_relative 'list_rentals'
+require_relative 'create_student'
+require_relative 'create_teacher'
+require_relative 'preserve_data'
 
 class App
   def initialize
@@ -35,73 +39,6 @@ class App
       puts 'Invalid option'
       nil
     end
-  end
-
-  def create_student
-    age = request_age
-    name = request_name
-    parent_permission = request_parent_permission
-    return if parent_permission.nil?
-
-    student = Student.new(classroom: @classroom, age: age, parent_permission: parent_permission, name: name)
-    @people << student
-    puts 'Student created successfully'
-  end
-
-  def request_age
-    puts 'Age:'
-    age = gets.chomp.to_i
-    while age <= 0
-      puts 'Invalid input. Please enter a positive number for age:'
-      age = gets.chomp.to_i
-    end
-    age
-  end
-
-  def request_name
-    puts 'Name:'
-    name = gets.chomp
-    while name.empty?
-      puts 'Invalid input. Please enter a non-empty name:'
-      name = gets.chomp
-    end
-    name
-  end
-
-  def request_parent_permission
-    puts 'Has parent permission? [Y/N]:'
-    parent_permission = gets.chomp.downcase
-    until %w[y n].include?(parent_permission)
-      puts 'Invalid input. Please enter Y or N:'
-      parent_permission = gets.chomp.downcase
-    end
-    parent_permission == 'y'
-  end
-
-  def create_teacher
-    puts 'create a new teacher'
-
-    age = nil
-    until age&.positive?
-      puts 'Age (must be a positive integer):'
-      age = gets.chomp.to_i
-    end
-
-    name = nil
-    until name && !name.empty?
-      puts 'Name:'
-      name = gets.chomp.strip
-    end
-
-    specialization = nil
-    until specialization && !specialization.empty?
-      puts 'Specialization:'
-      specialization = gets.chomp.strip
-    end
-
-    teacher = Teacher.new(age, name, specialization)
-    @people << teacher
-    puts 'Teacher created successfully'
   end
 
   def create_book
