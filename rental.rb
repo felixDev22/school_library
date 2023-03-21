@@ -9,7 +9,6 @@ class Rental
 
     @person = person
     person['rentals'] << self
-    
   end
 
   def to_h

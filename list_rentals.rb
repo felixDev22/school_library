@@ -1,4 +1,7 @@
+public
+
 def list_rentals
+  @rental = load_data('rental.json')
   puts 'Enter the ID of the person:'
   id = gets.chomp.to_i
   person = @people.find { |p| p.id == id }
