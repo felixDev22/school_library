@@ -5,9 +5,11 @@ class Rental
   def initialize(date, person, book)
     @date = date
     @book = book
+    book['rentals'] << self
+
     @person = person
-    person.rentals << self
-    book.rentals << self
+    person['rentals'] << self
+    
   end
 
   def to_h
