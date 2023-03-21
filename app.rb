@@ -5,10 +5,9 @@ require_relative 'book'
 require_relative 'rental'
 require_relative 'classroom'
 require_relative 'options'
-require_relative 'list_rentals'
+require_relative 'preserve_data'
 require_relative 'create_student'
 require_relative 'create_teacher'
-require_relative 'preserve_data'
 
 class App
   def initialize
@@ -18,13 +17,26 @@ class App
   end
 
   def list_all_books
-    puts 'Please add a book to the library' if @books.empty?
-    @books.each { |book| puts "Title: #{book.title}, Author: #{book.author}" }
+    @book = load_data('books.json')
+    if @book.empty?
+      puts 'Please add a book to the library'
+    else
+      data = @book.map(&:to_h)
+      data.each do |book|
+        puts "Title: #{book['title']}, Author: #{book['author']}"
+      end
+    end
   end
 
   def list_all_persons
-    puts 'Please add a person to the library' if @people.empty?
-    @people.each { |person| puts "[#{person.class.name}] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}" }
+    if @people.empty?
+      puts 'Please add a person to the library'
+    else
+      data = @people.map(&:to_h)
+      data.each do |person|
+        puts "[#{person.class.name}] Name: #{person[:name]}, ID: #{person[:id]}, Age: #{person[:age]}"
+      end
+    end
   end
 
   def create_person
@@ -58,21 +70,34 @@ class App
 
     book = Book.new(title, author)
     @books << book
+    save_data(@books, 'books.json')
     puts "Book #{title} created successfully."
   end
 
-  def create_rental
-    book = select_book
-    person = select_person
-    date = select_date
-    return unless book && person && date
+   def create_rental
+    puts 'Select a book from the list'
+    @book = load_data('books.json')
+    @book.each_with_index do |book, index|
+      puts "#{index}) Title: #{book['title']}, Author: #{book['author']}"
+    end
+    rental_book = gets.chomp.to_i
 
-    rental = Rental.new(date, person, book)
-    @rentals << rental
+    puts 'Select a person from list'
+    @people = load_data('people.json')
+    @people.each_with_index do |person, index|
+      puts "#{index}) Name: #{person['name']}, ID: #{person['id']}, Age: #{person['age']}"
+    end
+    rental_person = gets.chomp.to_i
+
+    print 'Date: '
+    date = gets.chomp
+
+    rental = Rental.new(date, @book[rental_book], @people[rental_person])
+    @rentals.push(rental)
+    save_data(@rentals, 'rental.json')
     puts 'Rental created successfully'
   end
 
-  private
 
   def select_book
     puts 'select the book you want to rent by entering its number'
@@ -98,26 +123,5 @@ class App
   def select_date
     print 'Date: '
     gets.chomp.to_s
-  end
-
-  def list_rentals
-    puts 'Enter the ID of the person:'
-    id = gets.chomp.to_i
-    person = @people.find { |p| p.id == id }
-    if person.nil?
-      puts 'No person found with that ID'
-      return
-    end
-
-    rentals = @rentals.select { |rental| rental.person == person }
-    if rentals.empty?
-      puts 'No rentals found for that person'
-      return
-    end
-
-    puts "Rentals for #{person.name}:"
-    rentals.each do |rental|
-      puts "Date: #{rental.date}, Book: #{rental.book.title} by #{rental.book.author}"
-    end
   end
 end
