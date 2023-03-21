@@ -8,6 +8,7 @@ require_relative 'options'
 require_relative 'preserve_data'
 require_relative 'create_student'
 require_relative 'create_teacher'
+require_relative 'list_rentals'
 
 class App
   def initialize
@@ -74,7 +75,7 @@ class App
     puts "Book #{title} created successfully."
   end
 
-   def create_rental
+  def create_rental
     puts 'Select a book from the list'
     @book = load_data('books.json')
     @book.each_with_index do |book, index|
@@ -97,7 +98,6 @@ class App
     save_data(@rentals, 'rental.json')
     puts 'Rental created successfully'
   end
-
 
   def select_book
     puts 'select the book you want to rent by entering its number'
