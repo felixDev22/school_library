@@ -1,8 +1,6 @@
 require 'JSON'
 
 def save_data(data, filename)
-  return unless data
-
   save_input = data.map(&:to_h) # Convert each object to a hash
   File.write(filename, JSON.generate(save_input))
 end
