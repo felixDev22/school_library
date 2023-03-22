@@ -36,7 +36,6 @@ class App
     else
       data = @people.map(&:to_h)
       data.each do |person|
-        # puts "[#{person.class.name}] Name: #{person[:name]}, ID: #{person[:id]}, Age: #{person[:age]}"
         puts "Name: #{person['name']}, ID: #{person['id']}, Age: #{person['age']}"
       end
     end
