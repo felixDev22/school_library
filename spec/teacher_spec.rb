@@ -1,4 +1,4 @@
-require_relative '../teacher.rb'
+require_relative '../teacher'
 
 describe 'Teacher instance' do
   it 'creates an instance of the Teacher class' do
