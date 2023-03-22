@@ -25,6 +25,16 @@ class Person < Nameable
     of_age? || @parent_permission
   end
 
+  def to_h
+    {
+      name: @name,
+      id: @id,
+      age: @age,
+      parent_permission: @parent_permission,
+      rentals: @rentals.map(&:to_h)
+    }
+  end
+
   private
 
   def of_age?
