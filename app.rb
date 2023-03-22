@@ -30,12 +30,14 @@ class App
   end
 
   def list_all_persons
+    @people = load_data('people.json')
     if @people.empty?
       puts 'Please add a person to the library'
     else
       data = @people.map(&:to_h)
       data.each do |person|
-        puts "[#{person.class.name}] Name: #{person[:name]}, ID: #{person[:id]}, Age: #{person[:age]}"
+        # puts "[#{person.class.name}] Name: #{person[:name]}, ID: #{person[:id]}, Age: #{person[:age]}"
+        puts "Name: #{person['name']}, ID: #{person['id']}, Age: #{person['age']}"
       end
     end
   end
@@ -93,7 +95,7 @@ class App
     print 'Date: '
     date = gets.chomp
 
-    rental = Rental.new(date, @book[rental_book], @people[rental_person])
+    rental = Rental.new(date, @people[rental_person], @book[rental_book])
     @rentals.push(rental)
     save_data(@rentals, 'rental.json')
     puts 'Rental created successfully'
@@ -123,5 +125,16 @@ class App
   def select_date
     print 'Date: '
     gets.chomp.to_s
+  end
+
+  def list_rentals
+    @rental = load_data('rental.json')
+    print 'ID of person: '
+    id = gets.chomp.to_i
+    @rental.each do |rental|
+      if id == rental['person']['id']
+        puts "Date: #{rental['date']}, Book: #{rental['book']['title']}, by #{rental['book']['author']}"
+      end
+    end
   end
 end
