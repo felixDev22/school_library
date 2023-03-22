@@ -97,6 +97,13 @@ Install this project with:
 - Twitter: [@twitterhandle](https://twitter.com/@monzo200)
 - LinkedIn: [LinkedIn](https://https://www.linkedin.com/in/felixnyamai/)
 
+👤 **Bernabas**
+
+- GitHub: [@githubhandle](https://github.com/bernabasy)
+- Twitter: [@twitterhandle](https://twitter.com/@bernabasjosef)
+- LinkedIn: [LinkedIn](https://www.linkedin.com/in/bernabas-yosef)
+
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- FUTURE FEATURES -->
