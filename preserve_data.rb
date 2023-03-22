@@ -7,10 +7,15 @@ end
 
 def load_data(filename)
   if File.exist?(filename)
-    json = File.read(filename)
-    JSON.parse(json)
+    begin
+      json = File.read(filename)
+      JSON.parse(json)
+    rescue JSON::ParserError
+      puts 'Data list empty'
+      []
+    end
   else
-    # Handle the case when the file is missing
+    puts "File #{filename} is missing."
     []
   end
 end
