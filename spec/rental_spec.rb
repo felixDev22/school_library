@@ -25,4 +25,16 @@ describe Rental do
       expect(person['rentals'].last).to eq rental
     end
   end
+
+  describe '#convert to hash' do
+    book = { 'title' => 'The Great Gatsby', 'author' => 'F. Scott Fitzgerald', 'rentals' => [] }
+    person = { 'name' => 'John Doe', 'age' => 25, 'parent_permission' => true, 'rentals' => [] }
+    date = '2022-01-01'
+    rental = Rental.new(date, person, book)
+    describe '#to_h' do
+      it 'returns a hash with the date, person and book' do
+        expect(rental.to_h).to eq({ date: date, person: person, book: book })
+      end
+    end
+  end
 end
