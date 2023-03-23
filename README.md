@@ -103,7 +103,6 @@ Install this project with:
 - Twitter: [@twitterhandle](https://twitter.com/@bernabasjosef)
 - LinkedIn: [LinkedIn](https://www.linkedin.com/in/bernabas-yosef)
 
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- FUTURE FEATURES -->
@@ -121,7 +120,7 @@ Install this project with:
 
 Contributions, issues, and feature requests are welcome!
 
-Feel free to check the [issues page](https://github.com/felixDev22/school-library/issues/).
+Feel free to check the [issues page](https://github.com/felixDev22/school_library/issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
