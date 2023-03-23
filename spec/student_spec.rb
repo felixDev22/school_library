@@ -30,7 +30,7 @@ describe Student do
     context 'when the student is already in the classroom' do
       it 'does not add the student to the classroom again' do
         classroom.students.push(student)
-        expect { student.classroom = classroom }.not_to change { classroom.students.size }
+        expect { student.classroom = classroom }.to change { classroom.students.size }.by(0)
       end
     end
   end
