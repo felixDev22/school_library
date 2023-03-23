@@ -1,6 +1,7 @@
 require './book'
 require './person'
 require './student'
+require './nameable'
 require './rental'
 require './classroom'
 require './teacher'

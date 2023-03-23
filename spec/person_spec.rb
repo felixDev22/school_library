@@ -19,6 +19,13 @@ describe Person do
       expect(person.id).to_not be_nil
     end
   end
+
+  #   describe '#correct_name' do
+  #   it 'returns the person\'s name' do
+  #     expect(person.correct_name).to eq('Alice')
+  #   end
+  # end
+
   describe '#can_use_services?' do
     it 'returns true if the Person is of age or has parent permission' do
       person = Person.new(age: 18, name: 'John')
@@ -65,6 +72,11 @@ describe Person do
       it 'should have no rental' do
         expect(@person.rentals.length).to eql 0
       end
+    end
+  end
+  describe '#name' do
+    it 'returns the correct name' do
+      expect(@person.name).to eql('Tati')
     end
   end
 end
