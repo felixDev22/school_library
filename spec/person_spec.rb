@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-
-
 describe Person do
   let(:person) { Person.new(20, 'Alice', parent_permission: false) }
   context 'with one parameters' do
