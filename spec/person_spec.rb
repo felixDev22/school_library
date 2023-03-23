@@ -35,6 +35,28 @@ describe Person do
     end
   end
 
+  describe '#of_age?' do
+    context 'when age is greater than or equal to 18' do
+      it 'returns true' do
+        person = Person.new(age: 18)
+        expect(person.send(:of_age?)).to be true
+
+        person = Person.new(age: 20)
+        expect(person.send(:of_age?)).to be true
+      end
+    end
+
+    context 'when age is less than 18' do
+      it 'returns false' do
+        person = Person.new(age: 17)
+        expect(person.send(:of_age?)).to be false
+
+        person = Person.new(age: 12)
+        expect(person.send(:of_age?)).to be false
+      end
+    end
+  end
+
   before :each do
     @person = Person.new(age: 20, parent_permission: 'Y', name: 'Tati')
   end
